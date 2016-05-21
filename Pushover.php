@@ -5,7 +5,7 @@
  * PHP service wrapper for the pushover.net API: https://pushover.net/api
  *
  * @author Chris Schalenborgh <chris.s@kryap.com>
- * @version 0.2
+ * @version 0.3
  * @package php-pushover
  * @example test.php
  * @link https://pushover.net/api
@@ -16,6 +16,7 @@ class Pushover
 {
 	// api url
 	const API_URL = 'https://api.pushover.net/1/messages.xml';
+	const SOUNDS_API_URL = 'https://api.pushover.net/1/sounds.json';
 
 	/**
 	 * Application API token
@@ -444,6 +445,28 @@ class Pushover
 			else {
 				return ($xml->status == 1) ? true : false;
 			}
+		}
+	}
+
+	/**
+	 * Downloads from API Pushover sound list
+	 *
+	 * @return array|bool
+	 */
+	public function getSounds()
+	{
+		$c = curl_init();
+		curl_setopt($c, CURLOPT_URL, self::SOUNDS_API_URL . '?token=' . $this->getToken());
+		curl_setopt($c, CURLOPT_HEADER, false);
+		curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($c);
+		$sounds = json_decode($response);
+
+		if ($this->getDebug()) {
+			return array('output' => $response, 'input' => $this);
+		} else {
+			return ($sounds->status == 1) ? $sounds->sounds : false;
 		}
 	}
 }
