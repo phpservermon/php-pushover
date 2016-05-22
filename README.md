@@ -48,5 +48,5 @@
 * send
 > Send the message to the API
 
-* getSounds
+* getSoundsList
 > Downloads from API Pushover sound list

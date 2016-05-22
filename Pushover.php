@@ -453,7 +453,7 @@ class Pushover
 	 *
 	 * @return array|bool
 	 */
-	public function getSounds()
+	public function getSoundsList()
 	{
 		$c = curl_init();
 		curl_setopt($c, CURLOPT_URL, self::SOUNDS_API_URL . '?token=' . $this->getToken());
